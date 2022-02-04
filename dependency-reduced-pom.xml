@@ -61,6 +61,10 @@
                   <shadedPattern>no.ssb.guardian.shaded.org.log4j</shadedPattern>
                 </relocation>
                 <relocation>
+                  <pattern>org.slf4j</pattern>
+                  <shadedPattern>no.ssb.guardian.shaded.slf4j</shadedPattern>
+                </relocation>
+                <relocation>
                   <pattern>com.fasterxml.jackson</pattern>
                   <shadedPattern>no.ssb.guardian.shaded.com.fasterxml.jackson</shadedPattern>
                 </relocation>
