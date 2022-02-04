@@ -157,24 +157,4 @@ class GuardianClientTest {
                 .isEqualTo(token4);
     }
 
-    @Test
-    void testStuff() {
-        GuardianClientConfig config = GuardianClientConfig.builder()
-                .guardianUrl(DUMMY_URL_ROOT)
-                .maskinportenClientId(DUMMY_MASKINPORTEN_CLIENT_ID)
-                .keycloakUrl(DUMMY_URL_ROOT)
-                .keycloakClientSecret("secret".toCharArray())
-                .shortenedTokenExpirationInSeconds(0)
-                .build();
-
-        GuardianClient client = GuardianClient.withConfig()
-                .environment(STAGING)
-                .maskinportenClientId("some-uuid")
-                .keycloakClientSecret("some-secret")
-                .create();
-
-        String accessToken = client.getMaskinportenAccessToken("some:scope1", "some:scope2");
-        // ...
-
-    }
 }
