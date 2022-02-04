@@ -17,7 +17,7 @@ resources:
       type: github
       name: statisticsnorway/azure-pipelines-templates
       ref: refs/tags/1.1.29
-      endpoint: statisticsnorway (64)
+      endpoint: statisticsnorway (6)
 
 # Pipeline will be run on this base image
 pool:
@@ -35,30 +35,29 @@ variables:
   - name: MAVEN_OPTS
     value: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
 
-
-
 # Job which runs mvn build, mvn install,
 jobs:
   - job: buildTest
     displayName: 'compile deploy app'
     # Job condition: Run these jobs on any branch, but not on tags
     condition: not(startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
-    container: maven:3-adoptopenjdk-11
     # Steps in this Job
     steps:
-      # Authenticate Maven to Nexus using predefined Service Connections
-      # (Project Settings->Pipelines->Service Connections)
-      - task: MavenAuthenticate@0
-        displayName: 'Maven authenticate'
+      - task: DownloadSecureFile@1
+        name: gcrJsonKey
+        displayName: 'Download gcr creds'
         inputs:
-          mavenServiceConnections: 'mvnSsbBipPublic, mvnSsbBipReleases, mvnSsbBipSnapshots'
+          secureFile: 'gcr-key.json'
 
-      #Maven caching to speed up pipeline build time
-      - template: maven/task-cache.yml@templates
+      # Set env variable pointing to the file downloaded in previous task
+      # as a library in next task needs this env variable
+      - script: |
+          echo "Setting env variable GOOGLE_APPLICATION_CREDENTIALS"
+          echo "##vso[task.setvariable variable=GOOGLE_APPLICATION_CREDENTIALS]$(gcrJsonKey.secureFilePath)"
+        displayName: 'Setting GOOGLE_APPLICATION_CREDENTIALS env variable'
 
-      - template: maven/task-test-and-verify.yml@templates
-      # Code analysis
-      - template: maven/task-sonar-analyze.yml@templates
-
-      # Deploy artifact to Nexus
-      - template: maven/task-install-and-deploy-to-nexus.yml@templates
+  - template: complete-builds/job-test-gar.yml@templates
+    parameters:
+      artifactName: guardian-client-java
+      checkStyleRunAnalysis: false
+      sonarCloud: bipSonarCloud-Dapla
