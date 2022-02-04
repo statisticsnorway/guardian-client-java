@@ -1,0 +1,18 @@
+<!--
+This logback config file can be used when running in CLI mode (GuardianClientCmd). To activate, supply the following JVM parameter:
+-Dlogback.configurationFile=logback-cli.xml
+-->
+<configuration>
+    <appender name="STDERR" class="no.ssb.guardian.shaded.ch.qos.logback.core.ConsoleAppender" target="System.err">
+        <encoder>
+            <pattern>%msg%n</pattern>
+        </encoder>
+        <filter class="no.ssb.guardian.client.CmdLogbackFilter" />
+    </appender>
+
+    <logger name="no.ssb.guardian.client" level="TRACE" />
+
+    <root level="DEBUG">
+        <appender-ref ref="STDERR" />
+    </root>
+</configuration>

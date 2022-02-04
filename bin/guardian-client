@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if [ -z "$GUARDIAN_CLIENT_JAR" ]
+then
+    echo "Missing GUARDIAN_CLIENT_JAR environment variable (path to the guardian-client jar file)" >&2
+    exit 1
+fi
+
+java -Dlogback.configurationFile=logback-cli.xml -jar $GUARDIAN_CLIENT_JAR "$@"
+
+
