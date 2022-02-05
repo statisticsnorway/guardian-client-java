@@ -41,6 +41,7 @@ jobs:
     displayName: 'compile deploy app'
     # Job condition: Run these jobs on any branch, but not on tags
     condition: not(startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+    container: maven:3-adoptopenjdk-11
     # Steps in this Job
     steps:
       - task: DownloadSecureFile@1
