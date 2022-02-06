@@ -43,7 +43,7 @@ class DefaultMaskinportenTokenResolverTest {
     @Test
     void multipleScopes_getAccessTokenRequestBody_scopesShouldBeSet() {
         String requestJson = Util.toJson(resolver.getAccessTokenRequestBody(true, DUMMY_SCOPES));
-        assertThat(requestJson).contains("\"scopes\":[\"some:scope2\",\"some:scope1\"]");
+        assertThat(requestJson).contains("scopes", "some:scope1", "some:scope2");
     }
 
     @Test
