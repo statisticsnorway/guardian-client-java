@@ -35,6 +35,13 @@
     <slf4j.version>1.7.33</slf4j.version>
   </properties>
 
+  <scm>
+    <connection>scm:git:git://github.com/statisticsnorway/guardian-client-java.git</connection>
+    <developerConnection>scm:git:git@github.com:statisticsnorway/guardian-client-java.git</developerConnection>
+    <url>https://github.com/statisticsnorway/guardian-client-java</url>
+    <tag>HEAD</tag>
+  </scm>
+
   <repositories>
     <repository>
       <id>artifact-registry</id>
