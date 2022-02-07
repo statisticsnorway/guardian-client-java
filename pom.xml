@@ -21,6 +21,7 @@
     <maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
     <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+    <artifact-registry.url>artifactregistry://europe-north1-maven.pkg.dev/artifact-registry-14da</artifact-registry.url>
 
     <assertj.version>3.22.0</assertj.version>
     <caffeine.version>3.0.5</caffeine.version>
@@ -35,6 +36,26 @@
   </properties>
 
   <repositories>
+    <repository>
+      <id>artifact-registry</id>
+      <url>${artifact-registry.url}/maven-releases</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>artifact-registry-snapshot</id>
+      <url>${artifact-registry.url}/maven-snapshots</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
     <repository>
       <id>central</id>
       <url>https://repo.maven.apache.org/maven2</url>
@@ -245,18 +266,16 @@
   <profiles>
     <profile>
       <id>ssb-bip</id>
-      <repositories>
+      <distributionManagement>
+        <snapshotRepository>
+          <id>artifact-registry</id>
+          <url>${artifact-registry.url}/maven-snapshots</url>
+        </snapshotRepository>
         <repository>
           <id>artifact-registry</id>
-          <url>artifactregistry://europe-north1-maven.pkg.dev/artifact-registry-14da/maven-releases</url>
-          <releases>
-            <enabled>true</enabled>
-          </releases>
-          <snapshots>
-            <enabled>true</enabled>
-          </snapshots>
+          <url>${artifact-registry.url}/maven-releases</url>
         </repository>
-      </repositories>
+      </distributionManagement>
     </profile>
     <profile>
       <id>coverage</id>
