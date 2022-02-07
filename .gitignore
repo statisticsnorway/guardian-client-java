@@ -12,3 +12,5 @@ private/
 .settings
 .classpath
 .env
+ dependency-reduced-pom.xml
+ 
