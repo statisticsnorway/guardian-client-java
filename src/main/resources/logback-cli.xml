@@ -3,7 +3,7 @@ This logback config file can be used when running in CLI mode (GuardianClientCmd
 -Dlogback.configurationFile=logback-cli.xml
 -->
 <configuration>
-    <appender name="STDERR" class="no.ssb.guardian.shaded.ch.qos.logback.core.ConsoleAppender" target="System.err">
+    <appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender" target="System.err">
         <encoder>
             <pattern>%msg%n</pattern>
         </encoder>
