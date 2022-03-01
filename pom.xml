@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>no.ssb.guardian</groupId>
   <artifactId>guardian-client</artifactId>
-  <version>0.1.1-SNAPSHOT</version>
+  <version>0.1.1</version>
   <packaging>jar</packaging>
 
   <properties>
@@ -44,7 +44,7 @@
     <connection>scm:git:git://github.com/statisticsnorway/guardian-client-java.git</connection>
     <developerConnection>scm:git:git@github.com:statisticsnorway/guardian-client-java.git</developerConnection>
     <url>https://github.com/statisticsnorway/guardian-client-java</url>
-    <tag>HEAD</tag>
+    <tag>guardian-client-0.1.1</tag>
   </scm>
 
   <dependencies>
