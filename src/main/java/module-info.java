@@ -10,5 +10,7 @@ module no.ssb.guardian.client {
     requires lombok;
     requires org.slf4j;
 
+    opens no.ssb.guardian.client;
+
     exports no.ssb.guardian.client;
 }
