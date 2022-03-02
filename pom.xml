@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>no.ssb.guardian</groupId>
   <artifactId>guardian-client</artifactId>
-  <version>0.1.2-SNAPSHOT</version>
+    <version>0.1.2-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <properties>
@@ -11,6 +11,18 @@
     <maven.compiler.release>${java.version}</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <artifact-registry.url>artifactregistry://europe-north1-maven.pkg.dev/artifact-registry-14da</artifact-registry.url>
+
+    <!-- Dependency versions -->
+    <assertj.version>3.22.0</assertj.version>
+    <caffeine.version>3.0.5</caffeine.version>
+    <jackson.version>2.13.1</jackson.version>
+    <jjwt.version>0.11.2</jjwt.version>
+    <junit.version>5.8.2</junit.version>
+    <logback.version>1.2.10</logback.version>
+    <lombok.version>1.18.22</lombok.version>
+    <mockito.version>4.2.0</mockito.version>
+    <picocli.version>4.6.2</picocli.version>
+    <slf4j.version>1.7.33</slf4j.version>
 
     <!-- Plugin/extension versions -->
     <artifactregistry-maven-wagon.version>2.1.4</artifactregistry-maven-wagon.version>
@@ -24,20 +36,8 @@
     <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-    <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
+    <moditect-maven-plugin.version>1.0.0.RC2</moditect-maven-plugin.version>
     <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
-
-    <!-- Dependency versions -->
-    <assertj.version>3.22.0</assertj.version>
-    <caffeine.version>3.0.5</caffeine.version>
-    <logback.version>1.2.10</logback.version>
-    <lombok.version>1.18.22</lombok.version>
-    <mockito.version>4.2.0</mockito.version>
-    <jackson.version>2.13.1</jackson.version>
-    <jjwt.version>0.11.2</jjwt.version>
-    <junit.version>5.8.2</junit.version>
-    <picocli.version>4.6.2</picocli.version>
-    <slf4j.version>1.7.33</slf4j.version>
   </properties>
 
   <scm>
@@ -194,6 +194,28 @@
                   <shadedPattern>no.ssb.guardian.shaded.picocli</shadedPattern>
                 </relocation>
               </relocations>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <version>${moditect-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>add-module-infos</id>
+            <phase>package</phase>
+            <goals>
+              <goal>add-module-info</goal>
+            </goals>
+            <configuration>
+              <overwriteExistingFiles>true</overwriteExistingFiles>
+              <module>
+                <moduleInfoFile>
+                  src/main/java/module-info.java
+                </moduleInfoFile>
+              </module>
             </configuration>
           </execution>
         </executions>
