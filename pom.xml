@@ -193,6 +193,10 @@
                   <shadedPattern>no.ssb.guardian.shaded.com.github.benmanes.caffeine</shadedPattern>
                 </relocation>
                 <relocation>
+                  <pattern>org.checkerframework</pattern>
+                  <shadedPattern>no.ssb.guardian.shaded.org.checkerframework</shadedPattern>
+                </relocation>
+                <relocation>
                   <pattern>com.google.errorprone</pattern>
                   <shadedPattern>no.ssb.guardian.shaded.com.google.errorprone</shadedPattern>
                 </relocation>
