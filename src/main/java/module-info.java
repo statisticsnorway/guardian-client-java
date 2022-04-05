@@ -1,5 +1,6 @@
 module no.ssb.guardian.client {
     requires com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.annotation;
     requires com.fasterxml.jackson.core;
     requires com.github.benmanes.caffeine;
     requires info.picocli;
