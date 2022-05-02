@@ -26,6 +26,15 @@ public class GuardianClientConfig {
     private final Environment environment;
 
     /**
+     * internalAccess should be true if maskinporten guardian will only be accessed via its internal endpoints.
+     * This is used for deducing ´guardianUrl´.
+     *
+     * </p>Defaults to false</p>
+     */
+    @Builder.Default
+    private final boolean internalAccess = false;
+
+    /**
      * guardianUrl is the root URL of the maskinporten-guardian server
      * e.g. https://maskinporten-guardian.staging-bip-app.ssb.no
      *
@@ -38,7 +47,10 @@ public class GuardianClientConfig {
             return guardianUrl;
         }
 
-        if (environment == PROD) {
+        if (internalAccess) {
+            return URI.create("http://maskinporten-guardian.dapla.svc.cluster.local");
+        }
+        else if (environment == PROD) {
             return URI.create("https://guardian.dapla.ssb.no");
         }
         else if (environment == STAGING) {
@@ -133,7 +145,6 @@ public class GuardianClientConfig {
      */
     @Builder.Default
     private final int shortenedTokenExpirationInSeconds = 300; // 5 minutes
-
 
     public static class GuardianClientConfigBuilder {
 
