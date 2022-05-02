@@ -48,6 +48,9 @@ public class DefaultMaskinportenTokenResolver implements MaskinportenTokenResolv
             if (e instanceof InterruptedException) {
                 Thread.currentThread().interrupt();
             }
+
+            log.trace("keycloakToken", keycloakToken);
+            log.trace("requestBody", requestBody);
             throw new GuardianClientException(String.format(
                     "Error fetching maskinporten access token for client id %s",
                     config.getMaskinportenClientId()
