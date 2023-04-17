@@ -74,8 +74,8 @@ public class GuardianClientConfig {
 
 
     public URI getKeycloakUrl() {
-        if (guardianUrl != null) {
-            return guardianUrl;
+        if (keycloakUrl != null) {
+            return keycloakUrl;
         }
 
         if (environment == PROD) {
