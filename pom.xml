@@ -27,7 +27,7 @@
     <!-- Plugin/extension versions -->
     <artifactregistry-maven-wagon.version>2.2.3</artifactregistry-maven-wagon.version>
     <checkstyle.version>9.3</checkstyle.version>
-    <inject-maven-plugin.version>1.7</inject-maven-plugin.version>
+    <inject-maven-plugin.version>1.6</inject-maven-plugin.version>
     <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
     <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
     <maven-checkstyle-plugin.version>3.5.0</maven-checkstyle-plugin.version>
