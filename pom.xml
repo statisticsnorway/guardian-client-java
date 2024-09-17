@@ -212,30 +212,6 @@
           </execution>
         </executions>
       </plugin>
-<!--
-      <plugin>
-        <groupId>org.moditect</groupId>
-        <artifactId>moditect-maven-plugin</artifactId>
-        <version>${moditect-maven-plugin.version}</version>
-        <executions>
-          <execution>
-            <id>add-module-infos</id>
-            <phase>package</phase>
-            <goals>
-              <goal>add-module-info</goal>
-            </goals>
-            <configuration>
-              <overwriteExistingFiles>true</overwriteExistingFiles>
-              <module>
-                <moduleInfoFile>
-                  src/main/java/module-info.java
-                </moduleInfoFile>
-              </module>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
--->
       <plugin>
         <groupId>de.m3y.maven</groupId>
         <artifactId>inject-maven-plugin</artifactId>
