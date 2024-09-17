@@ -13,6 +13,9 @@ import static no.ssb.guardian.client.GuardianClientConfig.Environment.*;
 @Data
 public class GuardianClientConfig {
 
+    private final static String DEFAULT_KEYCLOAK_TOKEN_ENDPOINT = "/realms/ssb/protocol/openid-connect/token";
+    private final static String DEFAULT_KEYCLOAK_LEGACY_TOKEN_ENDPOINT = "/auth/realms/ssb/protocol/openid-connect/token";
+
     /**
      * maskinportenClientId is the maskinporten client ID from samhandlingsportalen, typically a UUID
      */
@@ -53,14 +56,20 @@ public class GuardianClientConfig {
         else if (environment == PROD) {
             return URI.create("https://guardian.dapla.ssb.no");
         }
-        else if (environment == STAGING) {
+        else if (environment == TEST) {
+            return URI.create("https://guardian.test.ssb.no");
+        }
+        else if (environment == PROD_BIP) {
+            return URI.create("https://guardian.dapla.ssb.no");
+        }
+        else if (environment == STAGING_BIP) {
             return URI.create("https://guardian.dapla-staging.ssb.no");
         }
         else if (environment == LOCAL) {
             return URI.create("http://localhost:10310");
         }
         else {
-            throw new NullPointerException("Missing guardianUrl");
+            throw new IllegalStateException("Missing guardianUrl");
         }
     }
 
@@ -79,27 +88,44 @@ public class GuardianClientConfig {
         }
 
         if (environment == PROD) {
-            return URI.create("https://keycloak.prod-bip-app.ssb.no");
+            return URI.create("https://auth.ssb.no");
         }
-        else if (environment == STAGING) {
-            return URI.create("https://keycloak.staging-bip-app.ssb.no");
+        else if (environment == TEST) {
+            return URI.create("https://auth.test.ssb.no");
         }
         else if (environment == LOCAL) {
-            return URI.create("http://keycloak.staging-bip-app.ssb.no");
+            return URI.create("http://auth-play.test.ssb.no");
+        }
+        else if (environment == PROD_BIP) {
+            return URI.create("https://keycloak.prod-bip-app.ssb.no");
+        }
+        else if (environment == STAGING_BIP) {
+            return URI.create("https://keycloak.staging-bip-app.ssb.no");
         }
         else {
-            throw new NullPointerException("Missing keycloakUrl");
+            throw new IllegalStateException("Missing keycloakUrl");
         }
     }
 
     /**
      * keycloakTokenEndpoint is the path to the token endpoint of the keycloak server. You will typically
      * not need to configure this unless you're using a non-standard endpoint. Defaults to
-     * /auth/realms/ssb/protocol/openid-connect/token
+     * /realms/ssb/protocol/openid-connect/token
      */
     @NonNull
     @Builder.Default
-    private final String keycloakTokenEndpoint = "/auth/realms/ssb/protocol/openid-connect/token";
+    private final String keycloakTokenEndpoint = DEFAULT_KEYCLOAK_TOKEN_ENDPOINT;
+
+    public String getKeycloakTokenEndpoint() {
+
+        // Old Keycloak versions like, e.g. the instance in BIP use a different token endpoint as default
+        boolean isLegacyKeycloak = environment == PROD_BIP || environment == STAGING_BIP;
+        if (DEFAULT_KEYCLOAK_TOKEN_ENDPOINT.equals(keycloakTokenEndpoint) && isLegacyKeycloak) {
+            return DEFAULT_KEYCLOAK_LEGACY_TOKEN_ENDPOINT;
+        }
+
+        return keycloakTokenEndpoint;
+    }
 
     /**
      * <p>keycloakClientId is the keycloak client credentials id for the keycloak
@@ -177,6 +203,7 @@ public class GuardianClientConfig {
     }
 
     public enum Environment {
-        PROD, STAGING, LOCAL
+        PROD, TEST, LOCAL, PROD_BIP, STAGING_BIP
     }
+
 }

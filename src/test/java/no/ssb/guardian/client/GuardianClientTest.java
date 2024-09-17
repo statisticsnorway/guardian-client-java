@@ -4,13 +4,12 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
-import java.security.Guard;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 
-import static no.ssb.guardian.client.GuardianClientConfig.Environment.STAGING;
+import static no.ssb.guardian.client.GuardianClientConfig.Environment.TEST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -45,7 +44,7 @@ class GuardianClientTest {
         assertThat(requiredEnv("TEST_KEYCLOAK_CLIENT_SECRET")).isNotBlank();
 
         GuardianClient client = new GuardianClient(GuardianClientConfig.builder()
-                .environment(STAGING)
+                .environment(TEST)
                 .maskinportenClientId(requiredEnv("TEST_MASKINPORTEN_CLIENT_ID"))
                 .keycloakClientSecret(requiredEnv("TEST_KEYCLOAK_CLIENT_SECRET").toCharArray())
                 .build());
@@ -64,7 +63,7 @@ class GuardianClientTest {
         assertThat(requiredEnv("TEST_KEYCLOAK_TOKEN")).isNotBlank();
 
         GuardianClient client = new GuardianClient(GuardianClientConfig.builder()
-                .environment(STAGING)
+                .environment(TEST)
                 .maskinportenClientId(requiredEnv("TEST_MASKINPORTEN_CLIENT_ID"))
                 .staticKeycloakToken(requiredEnv("TEST_KEYCLOAK_TOKEN"))
                 .build());

@@ -1,6 +1,5 @@
 package no.ssb.guardian.client;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Base64;

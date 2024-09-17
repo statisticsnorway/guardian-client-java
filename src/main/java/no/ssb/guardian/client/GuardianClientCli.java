@@ -20,8 +20,8 @@ public class GuardianClientCli implements Runnable, CommandLine.IVersionProvider
     boolean verbose;
 
     @Option(names = {"-e", "--env"}, showDefaultValue = ALWAYS,
-            description = "Runtime environment (PROD, STAGING or LOCAL) the Guardian Client is working with")
-    GuardianClientConfig.Environment environment = GuardianClientConfig.Environment.STAGING;
+            description = "Runtime environment (PROD, TEST, LOCAL, STAGING_BIP or PROD_BIP) the Guardian Client is working with")
+    GuardianClientConfig.Environment environment = GuardianClientConfig.Environment.TEST;
 
     @Option(names = {"-u", "--maskinporten-client-id"},
             description = "Maskinporten client ID", required = true)
