@@ -61,7 +61,7 @@ public class GuardianClient {
      * withConfig provides a fluent way to initialize a GuardianClient, like so:
      * <pre>
      *     GuardianClient.withConfig()
-     *     .environment(STAGING)
+     *     .environment(TEST)
      *     .maskinportenClientId("some-uuid")
      *     .keycloakClientSecret("some-secret")
      *     .create();
