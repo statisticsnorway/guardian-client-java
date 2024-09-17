@@ -57,7 +57,7 @@ public class GuardianClientConfig {
             return URI.create("https://guardian.dapla.ssb.no");
         }
         else if (environment == TEST) {
-            return URI.create("https://guardian.test.ssb.no");
+            return URI.create("https://guardian.dapla-staging.ssb.no");
         }
         else if (environment == PROD_BIP) {
             return URI.create("https://guardian.dapla.ssb.no");
