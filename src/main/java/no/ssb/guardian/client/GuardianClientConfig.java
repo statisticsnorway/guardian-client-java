@@ -54,10 +54,10 @@ public class GuardianClientConfig {
             return URI.create("http://maskinporten-guardian.dapla.svc.cluster.local");
         }
         else if (environment == PROD) {
-            return URI.create("https://guardian.dapla.ssb.no");
+            return URI.create("https://guardian.intern.ssb.no");
         }
         else if (environment == TEST) {
-            return URI.create("https://guardian.dapla-staging.ssb.no");
+            return URI.create("https://guardian.intern.test.ssb.no");
         }
         else if (environment == PROD_BIP) {
             return URI.create("https://guardian.dapla.ssb.no");
@@ -206,4 +206,31 @@ public class GuardianClientConfig {
         PROD, TEST, LOCAL, PROD_BIP, STAGING_BIP
     }
 
+    public String toDebugString() {
+        return String.format("""
+            {
+              maskinportenClientId = '%s',
+              environment = %s,
+              internalAccess = %b,
+              guardianUrl = %s,
+              keycloakUrl = %s,
+              keycloakTokenEndpoint = '%s',
+              keycloakClientId = '%s',
+              shortenedTokenExpirationInSeconds = %d,
+              keycloakClientSecret = '%s',
+              staticKeycloakToken = '%s'
+            }
+            """,
+                maskinportenClientId,
+                environment,
+                internalAccess,
+                getGuardianUrl(),
+                getKeycloakUrl(),
+                getKeycloakTokenEndpoint(),
+                getKeycloakClientId(),
+                shortenedTokenExpirationInSeconds,
+                keycloakClientSecret != null ? "****" : "null",
+                staticKeycloakToken != null ? "****" : "null"
+        );
+    }
 }
