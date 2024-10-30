@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>no.ssb.guardian</groupId>
   <artifactId>guardian-client</artifactId>
-    <version>0.2.2-SNAPSHOT</version>
+    <version>0.2.2</version>
   <packaging>jar</packaging>
 
   <properties>
@@ -47,7 +47,7 @@
   <scm>
     <developerConnection>scm:git:https://github.com/${github.repository}.git</developerConnection>
     <url>https://github.com/${github.repository}</url>
-    <tag>0.2.0</tag>
+    <tag>guardian-client-0.2.2</tag>
   </scm>
 
   <dependencies>
