@@ -38,7 +38,7 @@ public class GuardianClient {
                    @NonNull MaskinportenTokenResolver maskinportenTokenResolver) {
         this.config = config;
         this.keycloakTokenResolver = keycloakTokenResolver;
-        this.maskinportenTokenResolver =maskinportenTokenResolver;
+        this.maskinportenTokenResolver = maskinportenTokenResolver;
         this.cache = Caffeine.newBuilder()
                 .expireAfter(new Expiry<String, AccessTokenWrapper>() {
                     @Override
@@ -55,6 +55,7 @@ public class GuardianClient {
                     }
                 })
                 .build();
+        log.debug("GuardianClient initialized with config: {}", config.toDebugString());
     }
 
     /**

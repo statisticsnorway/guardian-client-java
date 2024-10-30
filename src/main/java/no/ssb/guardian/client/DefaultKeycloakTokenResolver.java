@@ -4,6 +4,7 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -30,8 +31,9 @@ public class DefaultKeycloakTokenResolver implements KeycloakTokenResolver {
         String keycloakClientId = "maskinporten-" + config.getMaskinportenClientId();
         log.debug(VERBOSE, "Get keycloak access token for client ID " + keycloakClientId);
         String params = "grant_type=" + URLEncoder.encode("client_credentials", StandardCharsets.UTF_8);
+        URI url = config.getKeycloakUrl().resolve(config.getKeycloakTokenEndpoint());
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(config.getKeycloakUrl().resolve(config.getKeycloakTokenEndpoint()))
+                .uri(url)
                 .header("User-Agent", GuardianClient.userAgent())
                 .header( "Content-Type", "application/x-www-form-urlencoded")
                 .header("Authorization", "Basic " + base64EncodedCredentials(keycloakClientId, config.getKeycloakClientSecret()))
@@ -47,14 +49,15 @@ public class DefaultKeycloakTokenResolver implements KeycloakTokenResolver {
                 Thread.currentThread().interrupt();
             }
             throw new GuardianClientException(String.format(
-                    "Error fetching keycloak token for %s", keycloakClientId
+                    "Error fetching keycloak token from %s for %s", url, keycloakClientId
             ), e);
         }
 
         if (response.statusCode() != 200) {
             throw new GuardianClientException(String.format(
-                    "Error (%s) fetching keycloak token for %s: %s",
+                    "Error (%s) fetching keycloak token from %s for %s: %s",
                     response.statusCode(),
+                    url,
                     keycloakClientId,
                     response.body()
             ));

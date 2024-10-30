@@ -7,6 +7,7 @@ import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -32,8 +33,9 @@ public class DefaultMaskinportenTokenResolver implements MaskinportenTokenResolv
         log.debug(VERBOSE, "getMaskinportenAccessToken (user type: {})", isServiceUser ? "service" : "personal");
 
         String requestBody = Util.toJson(getAccessTokenRequestBody(isServiceUser(keycloakToken), scopes));
+        URI url = config.getGuardianUrl().resolve("/maskinporten/access-token");
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(config.getGuardianUrl().resolve("/maskinporten/access-token"))
+                .uri(url)
                 .header("User-Agent", GuardianClient.userAgent())
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + keycloakToken)
@@ -52,15 +54,17 @@ public class DefaultMaskinportenTokenResolver implements MaskinportenTokenResolv
             log.trace("keycloakToken", keycloakToken);
             log.trace("requestBody", requestBody);
             throw new GuardianClientException(String.format(
-                    "Error fetching maskinporten access token for client id %s",
+                    "Error fetching maskinporten access token from %s for client id %s",
+                    url,
                     config.getMaskinportenClientId()
             ), e);
         }
 
         if (response.statusCode() != 200) {
             throw new GuardianClientException(String.format(
-                    "Error (%s) fetching maskinporten access token for client id %s: %s",
+                    "Error (%s) fetching maskinporten access token from %s for client id %s: %s",
                     response.statusCode(),
+                    url,
                     config.getMaskinportenClientId(),
                     response.body()
             ));

@@ -17,7 +17,7 @@ class GuardianClientConfigTest {
                 .environment(GuardianClientConfig.Environment.TEST)
                 .build();
 
-        assertThat(config.getGuardianUrl()).hasToString("https://guardian.dapla-staging.ssb.no");
+        assertThat(config.getGuardianUrl()).hasToString("https://guardian.intern.test.ssb.no");
     }
 
     @Test
@@ -86,6 +86,19 @@ class GuardianClientConfigTest {
         assertThat(config.getKeycloakUrl()).hasToString("https://keycloak.prod-bip-app.ssb.no");
         assertThat(config.getKeycloakTokenEndpoint()).isEqualTo ("/foo/bar");
     }
+
+    @Test
+    void deduceKeycloakUrl_naisProdWithCustomEndpoint_shouldUseCustomEndpoint() {
+        GuardianClientConfig config = GuardianClientConfig.builder()
+                .maskinportenClientId(DUMMY_MASKINPORTEN_CLIENT_ID)
+                .environment(GuardianClientConfig.Environment.PROD)
+                .keycloakTokenEndpoint("/foo/bar")
+                .build();
+
+        assertThat(config.getKeycloakUrl()).hasToString("https://auth.ssb.no");
+        assertThat(config.getKeycloakTokenEndpoint()).isEqualTo ("/foo/bar");
+    }
+
 
     @Test
     void guardianUrl_shouldThrowExceptionForMissingEnvironment() {
@@ -163,5 +176,19 @@ class GuardianClientConfigTest {
                 .environment(GuardianClientConfig.Environment.STAGING_BIP)
                 .build();
         assertThat(config.getGuardianUrl()).hasToString("https://guardian.dapla-staging.ssb.no");
+    }
+
+    @Test
+    void toDebugString_shouldReturnMaskedSecrets() {
+        GuardianClientConfig config = GuardianClientConfig.builder()
+                .maskinportenClientId(DUMMY_MASKINPORTEN_CLIENT_ID)
+                .keycloakClientSecret("my-secret".toCharArray())
+                .staticKeycloakToken("my-token")
+                .environment(GuardianClientConfig.Environment.TEST)
+                .build();
+        System.out.println(config.toDebugString());
+
+        assertThat(config.toDebugString()).contains("keycloakClientSecret = '****'");
+        assertThat(config.toDebugString()).contains("staticKeycloakToken = '****'");
     }
 }
