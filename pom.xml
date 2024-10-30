@@ -10,7 +10,11 @@
     <java.version>17</java.version>
     <maven.compiler.release>${java.version}</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <artifact-registry.url>artifactregistry://europe-north1-maven.pkg.dev/artifact-registry-14da</artifact-registry.url>
+    <old-artifact-registry.url>artifactregistry://europe-north1-maven.pkg.dev/artifact-registry-14da</old-artifact-registry.url>
+    <dapla-artifact-registry.url>
+      artifactregistry://europe-north1-maven.pkg.dev/artifact-registry-5n/dapla-stat-maven</dapla-artifact-registry.url>
+    <github.repository>statisticsnorway/guardian-client-java</github.repository>
+    <project.scm.id>github</project.scm.id>
 
     <!-- Dependency versions -->
     <assertj.version>3.26.3</assertj.version>
@@ -41,10 +45,9 @@
   </properties>
 
   <scm>
-    <connection>scm:git:git://github.com/statisticsnorway/guardian-client-java.git</connection>
-    <developerConnection>scm:git:git@github.com:statisticsnorway/guardian-client-java.git</developerConnection>
-    <url>https://github.com/statisticsnorway/guardian-client-java</url>
-    <tag>HEAD</tag>
+    <developerConnection>scm:git:https://github.com/${github.repository}.git</developerConnection>
+    <url>https://github.com/${github.repository}</url>
+    <tag>0.2.0</tag>
   </scm>
 
   <dependencies>
@@ -251,32 +254,57 @@
 
   <repositories>
     <repository>
-      <id>artifact-registry</id>
-      <url>${artifact-registry.url}/maven-releases</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>artifact-registry-snapshot</id>
-      <url>${artifact-registry.url}/maven-snapshots</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-    <repository>
       <id>central</id>
       <url>https://repo.maven.apache.org/maven2</url>
+    </repository>
+    <repository>
+      <id>dapla-artifact-registry</id>
+      <url>${dapla-artifact-registry.url}</url>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <repository> <!-- Old AR is added for compatibility with Dapla modules -->
+      <id>old-artifact-registry</id>
+      <url>${old-artifact-registry.url}/maven-releases</url>
+    </repository>
+    <repository> <!-- Old AR is added for compatibility with Dapla modules -->
+      <id>old-artifact-registry-snapshots</id>
+      <url>${old-artifact-registry.url}/maven-snapshots</url>
     </repository>
   </repositories>
 
   <profiles>
+    <profile>
+      <id>github</id>
+      <distributionManagement>
+        <repository>
+          <id>github</id>
+          <name>GitHub Packages</name>
+          <url>https://maven.pkg.github.com/${github.repository}</url>
+        </repository>
+      </distributionManagement>
+    </profile>
+    <profile>
+      <id>dapla-artifact-registry</id>
+      <distributionManagement>
+        <repository>
+          <id>dapla-artifact-registry</id>
+          <url>${dapla-artifact-registry.url}</url>
+        </repository>
+        <snapshotRepository>
+          <id>dapla-artifact-registry-snapshots</id>
+          <url>${dapla-artifact-registry.url}</url>
+        </snapshotRepository>
+      </distributionManagement>
+      <properties>
+        <skip.it>true</skip.it>
+      </properties>
+    </profile>
     <profile>
       <id>ssb-bip</id>
       <distributionManagement>

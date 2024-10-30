@@ -1,0 +1,17 @@
+{
+  "template": "https://github.com/statisticsnorway/cookiecutter-maven-build-deploy",
+  "commit": "5d1175b6e674ec62cc401d9f4eeb2a4016eff633",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "repo_name": "guardian-client-java",
+      "team_uniform_name": "dapla-stat",
+      "program_type": "LIBRARY",
+      "java_version": "17",
+      "default_branch_name": "master",
+      "__gha_folder_name": ".github",
+      "_template": "https://github.com/statisticsnorway/cookiecutter-maven-build-deploy"
+    }
+  },
+  "directory": null
+}
