@@ -5,7 +5,7 @@
   "context": {
     "cookiecutter": {
       "repo_name": "guardian-client-java",
-      "team_uniform_name": "dapla-stat",
+      "team_uniform_name": "dftjen",
       "program_type": "LIBRARY",
       "java_version": "17",
       "default_branch_name": "master",
