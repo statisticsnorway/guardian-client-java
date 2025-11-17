@@ -10,9 +10,8 @@
     <java.version>17</java.version>
     <maven.compiler.release>${java.version}</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <old-artifact-registry.url>artifactregistry://europe-north1-maven.pkg.dev/artifact-registry-14da</old-artifact-registry.url>
     <dapla-artifact-registry.url>
-      artifactregistry://europe-north1-maven.pkg.dev/artifact-registry-5n/dapla-stat-maven</dapla-artifact-registry.url>
+      artifactregistry://europe-north1-maven.pkg.dev/artifact-registry-5n/dftjen-maven</dapla-artifact-registry.url>
     <github.repository>statisticsnorway/guardian-client-java</github.repository>
     <project.scm.id>github</project.scm.id>
 
@@ -268,14 +267,6 @@
         <enabled>true</enabled>
       </snapshots>
     </repository>
-    <repository> <!-- Old AR is added for compatibility with Dapla modules -->
-      <id>old-artifact-registry</id>
-      <url>${old-artifact-registry.url}/maven-releases</url>
-    </repository>
-    <repository> <!-- Old AR is added for compatibility with Dapla modules -->
-      <id>old-artifact-registry-snapshots</id>
-      <url>${old-artifact-registry.url}/maven-snapshots</url>
-    </repository>
   </repositories>
 
   <profiles>
@@ -304,19 +295,6 @@
       <properties>
         <skip.it>true</skip.it>
       </properties>
-    </profile>
-    <profile>
-      <id>ssb-bip</id>
-      <distributionManagement>
-        <repository>
-          <id>artifact-registry</id>
-          <url>${artifact-registry.url}/maven-releases</url>
-        </repository>
-        <snapshotRepository>
-          <id>artifact-registry-snapshots</id>
-          <url>${artifact-registry.url}/maven-snapshots</url>
-        </snapshotRepository>
-      </distributionManagement>
     </profile>
     <profile>
       <id>coverage</id>
