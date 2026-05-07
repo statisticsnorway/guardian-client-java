@@ -4,16 +4,16 @@ on:
   push:
     branches:
       - master
-  # pull_request event is required only for autolabeler
-  pull_request:
+  # pull_request_target runs in base repo context, giving the token write access
+  # required for the autolabeler to label PRs (including from forks)
+  pull_request_target:
     types:
       - opened
       - reopened
       - synchronize
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 jobs:
   update_release_draft:
@@ -21,19 +21,34 @@ jobs:
     if: github.event_name == 'push'
     permissions:
       contents: write
+      id-token: write
     runs-on: ubuntu-latest
     steps:
+      - name: Create DaplaBot app token
+        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
+        id: app-token
+        with:
+          client-id: ${{ secrets.DAPLA_BOT_APP_ID }}
+          private-key: ${{ secrets.DAPLA_BOT_PRIVATE_KEY }}
+
       - uses: release-drafter/release-drafter@563bf132657a13ded0b01fcb723c5a58cdd824e2 # v7.2.1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
 
   autolabeler:
     # Only run the autolabeler on pull request events
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request_target'
     permissions:
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
+      - name: Create DaplaBot app token
+        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
+        id: app-token
+        with:
+          client-id: ${{ secrets.DAPLA_BOT_APP_ID }}
+          private-key: ${{ secrets.DAPLA_BOT_PRIVATE_KEY }}
+
       - uses: release-drafter/release-drafter@563bf132657a13ded0b01fcb723c5a58cdd824e2 # v7.2.1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
