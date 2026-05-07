@@ -16,16 +16,23 @@ permissions:
 
 jobs:
   update_release_draft:
+    # Only draft/update a release when a PR is merged into master
+    if: github.event_name == 'push'
     permissions:
-      # write permission is required to create a GitHub release
       contents: write
-      # write permission is required for autolabeler
-      # otherwise, read permission is required at least
+    runs-on: ubuntu-latest
+    steps:
+      - uses: release-drafter/release-drafter@563bf132657a13ded0b01fcb723c5a58cdd824e2 # v7.2.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  autolabeler:
+    # Only run the autolabeler on pull request events
+    if: github.event_name == 'pull_request'
+    permissions:
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
-      # Draft the next Release notes as Pull Requests are merged into main
-      
       - uses: release-drafter/release-drafter@563bf132657a13ded0b01fcb723c5a58cdd824e2 # v7.2.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
