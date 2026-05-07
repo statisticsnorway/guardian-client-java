@@ -14,3 +14,4 @@ private/
 .env
 dependency-reduced-pom.xml
 release.properties
+.vscode/
