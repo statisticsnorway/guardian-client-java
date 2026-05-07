@@ -5,8 +5,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Header;
-import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import lombok.experimental.UtilityClass;
@@ -21,7 +19,7 @@ import java.util.Optional;
 @UtilityClass
 public class Util {
 
-    private static final JwtParser JWT_PARSER = Jwts.parserBuilder().build();
+    private static final JwtParser JWT_PARSER = Jwts.parser().unsecured().build();
     private static final ObjectMapper OBJECT_MAPPER;
 
     static {
@@ -67,8 +65,7 @@ public class Util {
     public static Claims jwtClaimsOf(String jwtString) {
         try {
             String withoutSignature = jwtString.substring(0, jwtString.lastIndexOf('.') + 1);
-            Jwt<Header, Claims> jwt = JWT_PARSER.parseClaimsJwt(withoutSignature);
-            return jwt.getBody();
+            return JWT_PARSER.parseUnsecuredClaims(withoutSignature).getPayload();
         }
         catch (Exception e) {
             throw new GuardianClientException("Error parsing claims from jwt: " + jwtString, e);

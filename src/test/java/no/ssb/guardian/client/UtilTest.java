@@ -57,7 +57,7 @@ class UtilTest {
 
     @Test
     void jwtClaimsOf_shouldReturnClaims() {
-        String jwtString = Jwts.builder().setSubject("user").compact();
+        String jwtString = Jwts.builder().subject("user").compact();
         Claims claims = Util.jwtClaimsOf(jwtString);
         assertEquals("user", claims.getSubject());
     }
@@ -71,7 +71,7 @@ class UtilTest {
     @Test
     void jwtExpirationDateOf_shouldReturnExpirationDate() {
         Date expiration = new Date(System.currentTimeMillis() + 10000);
-        String jwtString = Jwts.builder().setExpiration(expiration).compact();
+        String jwtString = Jwts.builder().expiration(expiration).compact();
         Date result = Util.jwtExpirationDateOf(jwtString);
 
         assertEquals(expiration.getTime() / 1000, result.getTime() / 1000);
