@@ -6,8 +6,8 @@ module no.ssb.guardian.client {
     requires info.picocli;
     requires java.net.http;
     requires jjwt.api;
-    requires logback.classic;
-    requires logback.core;
+    requires ch.qos.logback.classic;
+    requires ch.qos.logback.core;
     requires lombok;
     requires org.slf4j;
 
