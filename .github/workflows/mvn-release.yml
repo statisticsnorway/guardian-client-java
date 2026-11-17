@@ -59,13 +59,16 @@ jobs:
           git config user.email ${{steps.get-bot-vars.outputs.bot_email}}
           git config user.name ${{steps.get-bot-vars.outputs.bot_name}}
 
+      # GitHub Packages' Maven registry rejects GitHub App installation tokens (401), so the
+      # DaplaBot token cannot be used here. GITHUB_TOKEN works via 'packages: write' above.
+      # The app token is still used for checkout/push (master branch protection) and the release.
       - name: Setup Maven authentication to GitHub packages
         uses: s4u/maven-settings-action@894661b3ddae382f1ae8edbeab60987e08cf0788 # v4.0.0
         with:
           override: true
           githubServer: false
           servers: >-
-            [{"id": "github","username": "${{steps.get-bot-vars.outputs.bot_email}}","password": "${{steps.app-token.outputs.token}}"}]
+            [{"id": "github","username": "${{ github.actor }}","password": "${{ secrets.GITHUB_TOKEN }}"}]
       
       - name: Maven release and deploy to GitHub packages
         id: release-artifact
