@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.junit.jupiter.api.Test;
 
+import java.security.KeyPair;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Map;
@@ -60,6 +61,33 @@ class UtilTest {
         String jwtString = Jwts.builder().subject("user").compact();
         Claims claims = Util.jwtClaimsOf(jwtString);
         assertEquals("user", claims.getSubject());
+    }
+
+    /**
+     * Real tokens from Keycloak/Maskinporten are signed (alg RS256). jjwt 0.12's unsecured parser rejects
+     * such a token once the signature is stripped, so this must work without going through that parser.
+     */
+    @Test
+    void jwtClaimsOf_shouldReturnClaimsForSignedRs256Jwt() {
+        KeyPair keyPair = Jwts.SIG.RS256.keyPair().build();
+        Date expiration = new Date(System.currentTimeMillis() + 60_000);
+        String jwtString = Jwts.builder()
+                .subject("user")
+                .expiration(expiration)
+                .claim("key", "value")
+                .signWith(keyPair.getPrivate(), Jwts.SIG.RS256)
+                .compact();
+
+        Claims claims = Util.jwtClaimsOf(jwtString);
+
+        assertEquals("user", claims.getSubject());
+        assertEquals("value", claims.get("key"));
+        assertEquals(expiration.getTime() / 1000, Util.jwtExpirationDateOf(jwtString).getTime() / 1000);
+    }
+
+    @Test
+    void jwtClaimsOf_shouldThrowExceptionForJwtWithoutPayload() {
+        assertThrows(GuardianClientException.class, () -> Util.jwtClaimsOf("no-dots-here"));
     }
 
     @Test
