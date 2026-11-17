@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import lombok.experimental.UtilityClass;
 
@@ -19,7 +18,6 @@ import java.util.Optional;
 @UtilityClass
 public class Util {
 
-    private static final JwtParser JWT_PARSER = Jwts.parser().unsecured().build();
     private static final ObjectMapper OBJECT_MAPPER;
 
     static {
@@ -60,15 +58,25 @@ public class Util {
     }
 
     /**
-     * jwtClaimsOf parses a JWT and returns its Claims
+     * jwtClaimsOf decodes the payload of a JWT and returns its Claims.
+     * <p>
+     * The signature is NOT verified: this is only used to read claims (e.g. expiry) from tokens we received
+     * directly from the token issuer. The payload is decoded directly instead of via jjwt's unsecured parser,
+     * which (since jjwt 0.12) rejects signed tokens (e.g. alg RS256) once the signature is stripped.
      */
     public static Claims jwtClaimsOf(String jwtString) {
         try {
-            String withoutSignature = jwtString.substring(0, jwtString.lastIndexOf('.') + 1);
-            return JWT_PARSER.parseUnsecuredClaims(withoutSignature).getPayload();
+            String[] parts = jwtString.split("\\.", -1);
+            if (parts.length < 2 || parts[1].isEmpty()) {
+                throw new IllegalArgumentException("JWT has no payload part");
+            }
+            byte[] payload = Base64.getUrlDecoder().decode(parts[1]);
+            Map<String, Object> claims = OBJECT_MAPPER.readValue(payload, new TypeReference<Map<String, Object>>() {});
+            return Jwts.claims().add(claims).build();
         }
         catch (Exception e) {
-            throw new GuardianClientException("Error parsing claims from jwt: " + jwtString, e);
+            // Never include the token itself in the message: it is a live credential and ends up in logs.
+            throw new GuardianClientException("Error parsing claims from jwt", e);
         }
     }
 
